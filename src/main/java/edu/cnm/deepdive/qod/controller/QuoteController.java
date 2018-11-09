@@ -6,6 +6,7 @@ import edu.cnm.deepdive.qod.model.entity.Quote;
 import edu.cnm.deepdive.qod.view.Nested;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.ExposesResourceFor;
 import org.springframework.http.HttpStatus;
@@ -67,7 +68,7 @@ public class QuoteController {
 
   @GetMapping(value = "{quoteId}", produces = MediaType.APPLICATION_JSON_VALUE)
   @JsonView(Nested.class)
-  public Quote get(@PathVariable("quoteId") long quoteId) {
+  public Quote get(@PathVariable("quoteId") UUID quoteId) {
     return quoteRepository.findById(quoteId).get();
   }
 
@@ -79,7 +80,7 @@ public class QuoteController {
 
   @DeleteMapping(value = "{quoteId}")
   @ResponseStatus(HttpStatus.NO_CONTENT)
-  public void delete(@PathVariable("quoteId") long quoteId) {
+  public void delete(@PathVariable("quoteId") UUID quoteId) {
     quoteRepository.delete(get(quoteId));
   }
 

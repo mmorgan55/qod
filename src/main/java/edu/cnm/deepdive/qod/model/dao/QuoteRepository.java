@@ -4,10 +4,11 @@ import edu.cnm.deepdive.qod.model.entity.Quote;
 import edu.cnm.deepdive.qod.model.entity.Source;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
-public interface QuoteRepository extends CrudRepository<Quote, Long> {
+public interface QuoteRepository extends CrudRepository<Quote, UUID> {
 
   List<Quote> findAllByTextContainingOrderByText(String fragment);
 
@@ -17,7 +18,7 @@ public interface QuoteRepository extends CrudRepository<Quote, Long> {
 
   List<Quote> findAllBySourceOrderByText(Source source);
 
-  Optional<Quote> findFirstBySourceAndId(Source source, long quoteId);
+  Optional<Quote> findFirstBySourceAndId(Source source, UUID quoteId);
 
 //  List<Quote> findAllBySourceContainingAndTextContainingOrderBySourceAscTextAsc(
 //      String source, String text);

@@ -9,6 +9,7 @@ import edu.cnm.deepdive.qod.view.Flat;
 import edu.cnm.deepdive.qod.view.Nested;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.ExposesResourceFor;
 import org.springframework.http.HttpStatus;
@@ -41,7 +42,7 @@ public class SourceQuoteController {
 
   @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
   @JsonView(Flat.class)
-  public List<Quote> list(@PathVariable("sourceId") long sourceId) {
+  public List<Quote> list(@PathVariable("sourceId") UUID sourceId) {
     Source source = sourceRepository.findById(sourceId).get();
     return quoteRepository.findAllBySourceOrderByText(source);
   }
@@ -50,7 +51,7 @@ public class SourceQuoteController {
       produces = MediaType.APPLICATION_JSON_VALUE)
   @JsonView(Nested.class)
   public ResponseEntity<Quote> post(
-      @PathVariable("sourceId") long sourceId, @RequestBody Quote quote) {
+      @PathVariable("sourceId") UUID sourceId, @RequestBody Quote quote) {
     Source source = sourceRepository.findById(sourceId).get();
     quote.setSource(source);
     quoteRepository.save(quote);
@@ -59,15 +60,15 @@ public class SourceQuoteController {
 
   @GetMapping(value = "{quoteId}", produces = MediaType.APPLICATION_JSON_VALUE)
   @JsonView(Flat.class)
-  public Quote get(@PathVariable("sourceId") long sourceId,
-      @PathVariable("quoteId") long quoteId) {
+  public Quote get(@PathVariable("sourceId") UUID sourceId,
+      @PathVariable("quoteId") UUID quoteId) {
     Source source = sourceRepository.findById(sourceId).get();
     return quoteRepository.findFirstBySourceAndId(source, quoteId).get();
   }
 
   @DeleteMapping(value = "{quoteId}")
   @ResponseStatus(HttpStatus.NO_CONTENT)
-  public void delete(@PathVariable("sourceId") long sourceId, @PathVariable("quoteId") long quoteId) {
+  public void delete(@PathVariable("sourceId") UUID sourceId, @PathVariable("quoteId") UUID quoteId) {
     quoteRepository.delete(get(sourceId, quoteId));
   }
 
